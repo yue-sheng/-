@@ -27,4 +27,6 @@
 *.lib
 
 # Executables
-
+*.ncb
+*.db
+*.sdf	
