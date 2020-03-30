@@ -30,3 +30,6 @@
 *.ncb
 *.db
 *.sdf	
+*.exe
+*.out
+*.app
