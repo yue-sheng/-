@@ -30,7 +30,9 @@ END_MESSAGE_MAP()
 CrandomupdateView::CrandomupdateView()
 {
 	// TODO: 在此处添加构造代码
-
+	c = 0;
+	count = 1;
+	flag = 0;
 }
 
 CrandomupdateView::~CrandomupdateView()
@@ -85,7 +87,12 @@ CrandomupdateDoc* CrandomupdateView::GetDocument() const // 非调试版本是内联的
 void CrandomupdateView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
-	int count = 0;
+	if (flag == 1)
+	{
+		count += 1; count = count % 4 ;
+		if (count == 0)
+			count = 4;
+	}
 
 	CrandomupdateDoc* pDoc = GetDocument();
 	CClientDC dc(this);
@@ -102,10 +109,12 @@ void CrandomupdateView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	int a = rand() % 50 + 5;
 	int b = rand() % 100 + 6;
-	int c = a + b;
-	pDoc->A.Format(_T("%d"), a);
-	pDoc->B.Format(_T("%d"), b);
-	pDoc->C.Format(_T("%d"), c);
+	int d = a;
+	int e = b;
+	
+	pDoc->A.Format(_T("%d"), d);
+	pDoc->B.Format(_T("%d"), e);
+	
 
 	GetClientRect(&ran);
 	GetClientRect(&redt);
@@ -115,18 +124,31 @@ void CrandomupdateView::OnLButtonDown(UINT nFlags, CPoint point)
 		dc.TextOutW(point.x, point.y, pDoc->A);
 	else if (point.x<600 && point.x>300 && point.y<200 && point.y>45)
 		dc.TextOutW(point.x, point.y, pDoc->B);
-	else if (point.x<800 && point.x>700 && point.y<200 && point.y>45)
-		dc.TextOutW(point.x, point.y, pDoc->C);
-	else if (point.x < 800 && point.x>700 && point.y < 200 && point.y>45)
+	else if (point.x < 950 && point.x>850 && point.y < 200 && point.y>45)
 	{
-		count++;
+		flag == 0;
 		switch (count)
 		{
 		case 1:dc.TextOutW(point.x, point.y, pDoc->add);
+			c = d + e;
+			break;
 		case 2:dc.TextOutW(point.x, point.y, pDoc->del);
+			c = d - e;
+			break;
 		case 3:dc.TextOutW(point.x, point.y, pDoc->mul);
+			c = d*e;
+			break;
 		case 4:dc.TextOutW(point.x, point.y, pDoc->div);
+			c = d / e;
+			break;
 		}
+		flag = 1;
+	}
+	else if (point.x < 800 && point.x>700 && point.y < 200 && point.y>45)
+	{
+		
+		pDoc->C.Format(_T("%d"), c);
+		dc.TextOutW(point.x, point.y, pDoc->C);
 	}
 	else dc.TextOutW(point.x, point.y, pDoc->warn);
 	CView::OnLButtonDown(nFlags, point);

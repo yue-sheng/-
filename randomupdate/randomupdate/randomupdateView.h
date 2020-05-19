@@ -17,7 +17,9 @@ public:
 
 // 操作
 public:
-
+	int c ;
+	int flag;
+	int count ;
 // 重写
 public:
 	virtual void OnDraw(CDC* pDC);  // 重写以绘制该视图
